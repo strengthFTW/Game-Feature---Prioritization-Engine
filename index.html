@@ -450,12 +450,10 @@ nav.sc{border-bottom-color:rgba(57,255,20,.2)}
       <div class="rcard">
         <div class="rch"><span class="rct">PRIORITY_SCORE_RANKING</span><span class="rct" style="color:var(--lime)">TOP 10</span></div>
         <div class="rcb" id="priority-rows"></div>
-        <div class="rcmd"><span class="rcmdt">&gt;_ python priority.py --output report</span><a href="#results" class="rcmdb">VIEW_DB &rarr;</a></div>
       </div>
       <div class="rcard">
         <div class="rch"><span class="rct">SENTIMENT_MATRIX</span><span class="rct" style="color:var(--cyan)">VADER_v3.3</span></div>
         <div class="rcb" id="sentiment-rows"></div>
-        <div class="rcmd"><span class="rcmdt">&gt;_ sentiment_analysis.py --vader</span><a href="#results" class="rcmdb">VIEW_DB &rarr;</a></div>
       </div>
     </div>
 
@@ -463,7 +461,6 @@ nav.sc{border-bottom-color:rgba(57,255,20,.2)}
       <div class="rch"><span class="rct">REVIEW_TIMELINE &mdash; Monthly Volume 2020&ndash;2023</span><span class="rct" style="color:var(--tm)">&#9646; POS &nbsp;&#9646; NEG</span></div>
       <div class="tlbars" id="tlbars"></div>
       <div class="tllabs" id="tllabs"></div>
-      <div class="rcmd"><span class="rcmdt">&gt;_ python timeline_analysis.py --monthly</span><a href="#results" class="rcmdb">FULL_CHART &rarr;</a></div>
     </div>
   </div>
 </section>
@@ -496,26 +493,12 @@ nav.sc{border-bottom-color:rgba(57,255,20,.2)}
   </div>
 </section>
 
-<!-- ══ GITHUB CTA ══ -->
-<section id="github" class="dot-d">
+<!-- ══ FOOTER ══ -->
+<footer style="padding: 40px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); background: var(--bg0);">
   <div class="wrap">
-    <div class="ghbadge rv">OPEN SOURCE PROJECT</div>
-    <div class="ghtitle rv d1">PROJECT_<span class="lm">REPOSITORY</span></div>
-    <p class="ghsub rv d2">287,937 Steam reviews &rarr; developer-ready priority roadmap.<br>Open source, fully documented, ready to run.</p>
-    <div class="ghctas rv d3">
-      <a href="https://github.com/strengthFTW/Game-Feature---Prioritization-Engine" target="_blank" class="btn bp">&#8599; STAR ON GITHUB</a>
-      <a href="#results" class="btn bo">&#128202; VIEW DASHBOARD</a>
-    </div>
-    <div class="ghclone rv d4">
-      <div class="ghct">
-        <span class="ghcp">$ </span>git clone https://github.com/strengthFTW/Game-Feature---Prioritization-Engine<br>
-        <span class="ghcp">$ </span>pip install -r requirements.txt<br>
-        <span class="ghcp">$ </span>python run_pipeline.py --game cyberpunk2077 --reviews all
-      </div>
-    </div>
-    <div class="ghfoot rv">GFPE.SH &middot; Python &middot; NLP &middot; ML &middot; Chart.js &middot; 287,937 reviews analyzed</div>
+    <div class="ghfoot" style="margin-top: 0;">GFPE.SH &middot; Python &middot; NLP &middot; ML &middot; Chart.js &middot; 287,937 reviews analyzed</div>
   </div>
-</section>
+</footer>
 
 <script>
 /* DATA */
