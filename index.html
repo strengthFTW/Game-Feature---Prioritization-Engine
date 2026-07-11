@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>GFPE.SH — Game Feature Prioritization Engine</title>
+<meta name="description" content="NLP + ML system analyzing 287,937 Steam reviews to generate developer-ready feature priority roadmaps."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg0:#090B12;--bg1:#0E1018;--bgc:#121620;--bgh:#161B26;
+  --light:#EDEADE;--term:#0D1117;
+  --lime:#39FF14;--yel:#E8FF00;--red:#FF2424;--cyan:#00D4FF;--pur:#A855F7;
+  --t1:#F0F2F8;--t2:#8B92A5;--tm:#4A5266;
+  --fd:'Space Grotesk',sans-serif;--fm:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);overflow-x:hidden}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg0)}::-webkit-scrollbar-thumb{background:rgba(57,255,20,.4);border-radius:2px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 48px}
+.light{background:var(--light);color:#0A0A0A}
+.dot-d{background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:22px 22px}
+.dot-l{background-image:radial-gradient(circle,rgba(0,0,0,.12) 1px,transparent 1px);background-size:22px 22px}
+
+/* Animations */
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(57,255,20,.5)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(57,255,20,0)}}
+@keyframes pulse-r{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,36,36,.5)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(255,36,36,0)}}
+@keyframes drift1{0%,100%{transform:translate(0,0) rotate(0deg)}33%{transform:translate(15px,-20px) rotate(5deg)}66%{transform:translate(-10px,15px) rotate(-3deg)}}
+@keyframes drift2{0%,100%{transform:translate(0,0)}33%{transform:translate(-20px,15px)}66%{transform:translate(12px,-10px)}}
+@keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(8px,-12px) scale(1.06)}}
+@keyframes blink{50%{opacity:0}}
+@keyframes flow{0%{background-position:0 0}100%{background-position:0 60px}}
+@keyframes scanline{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
+
+/* Scroll reveal */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .55s ease,transform .55s ease}
+.rvl{opacity:0;transform:translateX(-26px);transition:opacity .55s ease,transform .55s ease}
+.rvr{opacity:0;transform:translateX(26px);transition:opacity .55s ease,transform .55s ease}
+.rv.on,.rvl.on,.rvr.on{opacity:1;transform:translate(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:56px;display:flex;align-items:center;background:rgba(9,11,18,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);transition:border-color .3s}
+nav.sc{border-bottom-color:rgba(57,255,20,.2)}
+.ni{max-width:1160px;margin:0 auto;padding:0 48px;width:100%;display:flex;align-items:center;justify-content:space-between}
+.nlogo{font-family:var(--fm);font-size:.84rem;font-weight:600;color:var(--t1);text-decoration:none;border:1.5px solid rgba(255,255,255,.15);padding:6px 14px;letter-spacing:1px;transition:border-color .2s,color .2s}
+.nlogo:hover{border-color:var(--lime);color:var(--lime)}
+.nlinks{display:flex;align-items:center;gap:2px;list-style:none}
+.nlinks a{font-family:var(--fm);font-size:.7rem;letter-spacing:1px;color:var(--t2);text-decoration:none;padding:6px 12px;transition:color .2s}
+.nlinks a:hover{color:var(--lime)}
+.ncta{font-family:var(--fm);font-size:.7rem;font-weight:700;letter-spacing:1.5px;color:#000;background:var(--lime);border:1.5px solid var(--lime);padding:7px 16px;text-decoration:none;transition:all .15s}
+.ncta:hover{background:transparent;color:var(--lime);transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--lime)}
+
+/* Section heading pattern */
+.sh{margin-bottom:52px}
+.shr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:10px}
+.sh h2{font-family:var(--fd);font-size:clamp(1.8rem,4vw,3rem);font-weight:800;line-height:1;letter-spacing:-1px}
+.sh h2 .lm{color:var(--lime)}.sh h2 .cy{color:var(--cyan)}.sh h2 .ye{color:var(--yel)}.sh h2 .re{color:var(--red)}
+.light .sh h2{color:#0A0A0A}
+.ss{font-family:var(--fm);font-size:.62rem;color:var(--tm);letter-spacing:1.5px;display:flex;align-items:center;gap:8px}
+.light .ss{color:#888}
+.sd{height:1px;background:rgba(255,255,255,.1);margin-top:10px}
+.light .sd{background:rgba(0,0,0,.15)}
+.sdot{width:7px;height:7px;border-radius:50%;background:var(--lime);animation:pulse 2s infinite;flex-shrink:0}
+.sdot.r{background:var(--red);animation:pulse-r 2s infinite}
+.sdot.y{background:var(--yel);animation:none}.sdot.c{background:var(--cyan);animation:none}
+
+/* Micro label */
+.ml{font-family:var(--fm);font-size:.6rem;letter-spacing:2px;color:var(--tm);text-transform:uppercase;display:block;margin-bottom:8px}
+.light .ml{color:#999}
+
+/* Status badge */
+.sbadge{display:inline-flex;align-items:center;gap:10px;border:1.5px solid rgba(57,255,20,.4);padding:6px 14px;font-family:var(--fm);font-size:.68rem;letter-spacing:2px;color:var(--lime);text-transform:uppercase}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;font-family:var(--fm);font-size:.78rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all .15s;border:none;cursor:pointer}
+.bp{background:var(--lime);color:#000;border:2px solid var(--lime)}
+.bp:hover{background:transparent;color:var(--lime);transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--lime)}
+.bo{background:transparent;color:var(--t1);border:2px solid rgba(255,255,255,.25)}
+.bo:hover{border-color:var(--lime);color:var(--lime);transform:translate(-2px,-2px);box-shadow:4px 4px 0 rgba(57,255,20,.3)}
+.bdo{background:transparent;color:#0A0A0A;border:2px solid #0A0A0A;transition:all .15s}
+.bdo:hover{background:#0A0A0A;color:var(--light);transform:translate(-2px,-2px);box-shadow:4px 4px 0 #0A0A0A}
+
+/* Cards */
+.cl{background:#FAFAFA;border:2px solid #0A0A0A;padding:28px;box-shadow:4px 4px 0 #0A0A0A;transition:all .15s}
+.cl:hover{transform:translate(-3px,-3px);box-shadow:7px 7px 0 #0A0A0A}
+
+/* Terminal */
+.term{background:var(--term);border:1.5px solid rgba(255,255,255,.1);overflow:hidden}
+.th{background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.08);padding:10px 16px;display:flex;align-items:center;gap:6px}
+.tdot{width:10px;height:10px;border-radius:50%}
+.tdot.red{background:#FF5F57}.tdot.yel{background:#FFBD2E}.tdot.grn{background:#28C840}
+.tt{font-family:var(--fm);font-size:.68rem;color:var(--tm);margin-left:8px}
+.tb{padding:14px 18px;font-family:var(--fm);font-size:.75rem;line-height:1.9}
+.tl{display:block}.ts{color:var(--lime)}.tw{color:var(--yel)}.tc{color:var(--tm)}.ti{color:var(--cyan)}
+.tcur{display:inline-block;width:8px;height:14px;background:var(--lime);vertical-align:middle;animation:blink 1s step-end infinite}
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:90px 0 80px;position:relative;overflow:hidden}
+.hbg{position:absolute;top:50%;right:-40px;transform:translateY(-50%);font-family:var(--fd);font-size:clamp(8rem,18vw,18rem);font-weight:900;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.033);pointer-events:none;z-index:0;line-height:1;user-select:none}
+.hinner{position:relative;z-index:1;display:grid;grid-template-columns:1fr 380px;gap:64px;align-items:center}
+.htitle{font-family:var(--fd);font-weight:900;line-height:.92;letter-spacing:-2px;margin-bottom:26px}
+.htitle .lf{display:block;font-size:clamp(2.8rem,6.5vw,6rem);color:var(--t1)}
+.htitle .lo{display:block;font-size:clamp(2.4rem,5.8vw,5.4rem);color:transparent;-webkit-text-stroke:2px var(--t1)}
+.htitle .la{display:block;font-size:clamp(2.8rem,6.5vw,6rem);color:var(--lime)}
+.htag{background:var(--yel);color:#000;padding:12px 18px;margin-bottom:30px;font-family:var(--fm);font-size:.74rem;display:inline-block;border:2px solid #000;box-shadow:4px 4px 0 #000}
+.hctas{display:flex;gap:12px;flex-wrap:wrap}
+/* Hero right: stat card */
+.hcard{background:var(--bgc);border:2px solid rgba(255,255,255,.1);padding:24px}
+.hmetrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.hm{background:var(--bg1);border:1px solid rgba(255,255,255,.07);padding:14px}
+.hmv{font-family:var(--fd);font-size:1.7rem;font-weight:800;color:var(--t1);line-height:1}
+.hmv.lm{color:var(--lime)}
+.hml{font-family:var(--fm);font-size:.58rem;color:var(--tm);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+/* Floating shapes */
+.geos{position:absolute;inset:0;pointer-events:none;z-index:0}
+.gs{position:absolute}
+.gs1{width:44px;height:44px;background:rgba(57,255,20,.12);border:2px solid rgba(57,255,20,.4);top:12%;right:6%;animation:drift1 8s ease-in-out infinite}
+.gs2{width:70px;height:70px;border-radius:50%;border:2px solid rgba(0,212,255,.3);bottom:20%;right:20%;animation:drift2 10s ease-in-out infinite}
+.gs3{width:12px;height:12px;background:var(--yel);border-radius:50%;top:55%;right:4%;animation:drift3 6s ease-in-out infinite}
+.gs4{width:20px;height:20px;background:rgba(168,85,247,.3);border:1px solid rgba(168,85,247,.5);top:40%;right:24%;animation:drift1 7s ease-in-out infinite reverse}
+.scan{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(57,255,20,.3),transparent);animation:scanline 3.5s linear .3s 1;pointer-events:none}
+
+/* ══════════════════════════════════════════
+   PROBLEM + DATASET (merged, cream)
+══════════════════════════════════════════ */
+#overview{padding:110px 0;background:var(--light)}
+.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;margin-bottom:60px}
+.ov-left{}
+.pbig{margin-bottom:36px}
+.pbig .pn{font-family:var(--fd);font-size:clamp(4rem,10vw,8.5rem);font-weight:900;line-height:1;color:#0A0A0A}
+.pbig .ps{font-family:var(--fm);font-size:.75rem;color:#777;letter-spacing:3px;text-transform:uppercase;margin-top:6px}
+.pcards{display:flex;flex-direction:column;gap:14px}
+.pcard{background:#FAFAFA;border:2px solid #0A0A0A;border-left:4px solid;padding:18px 20px;box-shadow:3px 3px 0 #0A0A0A;transition:all .15s}
+.pcard:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #0A0A0A}
+.pcard.c1{border-left-color:#1A8C00}.pcard.c2{border-left-color:#C8A200}.pcard.c3{border-left-color:#CC1A1A}
+.pc-num{font-family:var(--fm);font-size:.6rem;letter-spacing:2px;margin-bottom:6px;display:block}
+.pcard.c1 .pc-num{color:#1A8C00}.pcard.c2 .pc-num{color:#C8A200}.pcard.c3 .pc-num{color:#CC1A1A}
+.pc-title{font-family:var(--fd);font-size:.96rem;font-weight:800;color:#0A0A0A;margin-bottom:5px}
+.pc-body{font-family:var(--fm);font-size:.75rem;color:#4A4A4A;line-height:1.7}
+/* Dataset right side */
+.ov-right{}
+.dcard{background:#FAFAFA;border:2px solid #0A0A0A;padding:24px;box-shadow:4px 4px 0 #0A0A0A;margin-bottom:16px}
+.dcard-title{font-family:var(--fd);font-size:1.3rem;font-weight:800;color:#0A0A0A;margin-bottom:4px}
+.dcard-sub{font-family:var(--fm);font-size:.65rem;color:#888;letter-spacing:1px;margin-bottom:16px}
+.dprops{display:flex;flex-direction:column;gap:6px}
+.dprop{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.06)}
+.dprop:last-child{border:none}
+.dpk{font-family:var(--fm);font-size:.68rem;color:#888}
+.dpv{font-family:var(--fm);font-size:.68rem;color:#0A0A0A;font-weight:600}
+.dpv.g{color:#1A8C00}
+.dmetrics{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.dtile{background:#FAFAFA;border:2px solid #0A0A0A;padding:18px;box-shadow:3px 3px 0 #0A0A0A;position:relative;overflow:hidden;transition:all .15s}
+.dtile:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #0A0A0A}
+.dtile::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%}
+.dtile.lm::before{background:#39FF14}.dtile.cy::before{background:#00D4FF}.dtile.ye::before{background:#E8FF00}.dtile.re::before{background:#FF2424}
+.dtv{font-family:var(--fd);font-size:1.7rem;font-weight:800;color:#0A0A0A;line-height:1;margin-bottom:4px}
+.dtl{font-family:var(--fm);font-size:.58rem;color:#888;letter-spacing:1.5px;text-transform:uppercase}
+/* Solution strip */
+.sol-strip{background:#0A0A0A;padding:28px 36px;display:flex;align-items:center;gap:28px}
+.sol-icon{font-size:1.8rem;flex-shrink:0}
+.sol-text{font-family:var(--fm);font-size:.82rem;color:rgba(255,255,255,.8);line-height:1.8}
+.sol-text .hl{background:var(--yel);color:#000;padding:1px 6px}
+
+/* ══════════════════════════════════════════
+   ML PIPELINE
+══════════════════════════════════════════ */
+#pipeline{padding:110px 0;background:var(--bg1)}
+.plwrap{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+/* Stage list */
+.plstages{}
+.plst{display:flex;gap:16px}
+.plsl{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:36px}
+.snc{width:36px;height:36px;border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.66rem;font-weight:700;color:var(--tm);transition:all .35s;flex-shrink:0;cursor:pointer}
+.snc.on{border-color:var(--lime);color:var(--lime);box-shadow:0 0 12px rgba(57,255,20,.2)}
+.scon{width:2px;flex:1;min-height:24px;margin:5px 0;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.12) 0,rgba(255,255,255,.12) 4px,transparent 4px,transparent 12px);transition:background .35s}
+.scon.on{background:repeating-linear-gradient(to bottom,var(--lime) 0,var(--lime) 4px,transparent 4px,transparent 12px);animation:flow .8s linear infinite}
+.plsc{flex:1;background:var(--bgc);border:1.5px solid rgba(255,255,255,.07);border-left:2px solid transparent;padding:14px 16px;margin-bottom:24px;cursor:pointer;transition:all .25s}
+.plsc.on{border-left-color:var(--lime);background:var(--bgh)}
+.plsc:hover{background:var(--bgh)}
+.sttl{font-family:var(--fd);font-size:.9rem;font-weight:700;color:var(--t1);margin-bottom:4px;transition:color .2s}
+.plsc.on .sttl{color:var(--lime)}
+.stds{font-family:var(--fm);font-size:.68rem;color:var(--t2);line-height:1.6}
+/* Detail panel */
+.pldtl{position:sticky;top:80px}
+.pdp{display:none}.pdp.on{display:block}
+.pdh{font-family:var(--fd);font-size:1.25rem;font-weight:800;color:var(--t1);margin-bottom:4px;margin-top:6px}
+.pds{font-family:var(--fm);font-size:.7rem;color:var(--tm);margin-bottom:18px}
+.pdstats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.pdstat{background:var(--bgc);border:1px solid rgba(255,255,255,.07);padding:12px}
+.pdsv{font-family:var(--fm);font-size:.96rem;font-weight:700;color:var(--lime)}
+.pdsl{font-family:var(--fm);font-size:.58rem;color:var(--tm);letter-spacing:1px;margin-top:2px}
+.pdsv.re{color:var(--red)}.pdsv.cy{color:var(--cyan)}.pdsv.pu{color:var(--pur)}
+/* Stage formula badge */
+.formula{background:rgba(57,255,20,.06);border:1px solid rgba(57,255,20,.2);padding:12px 16px;margin-bottom:16px;font-family:var(--fm);font-size:.72rem;color:var(--lime);line-height:1.8}
+
+/* ══════════════════════════════════════════
+   RESULTS DASHBOARD
+══════════════════════════════════════════ */
+#results{padding:110px 0;background:var(--bg0)}
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+.rcard{background:var(--bgc);border:1.5px solid rgba(255,255,255,.08);overflow:hidden}
+.rch{background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.07);padding:12px 18px;display:flex;justify-content:space-between;align-items:center}
+.rct{font-family:var(--fm);font-size:.68rem;font-weight:600;color:var(--t2);letter-spacing:1px}
+.rcb{padding:16px 18px}
+/* Priority rows */
+.prow{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.prnk{font-family:var(--fm);font-size:.6rem;color:var(--tm);width:18px;flex-shrink:0}
+.prnm{font-family:var(--fm);font-size:.72rem;color:var(--t1);width:84px;flex-shrink:0}
+.prbw{flex:1;height:14px;background:rgba(255,255,255,.04);overflow:hidden}
+.prb{height:100%;width:0%;transition:width 1.2s ease}
+.prb.hi{background:linear-gradient(90deg,var(--red),rgba(255,36,36,.3))}
+.prb.md{background:linear-gradient(90deg,var(--yel),rgba(232,255,0,.3))}
+.prb.lo{background:linear-gradient(90deg,var(--lime),rgba(57,255,20,.3))}
+.prs{font-family:var(--fm);font-size:.6rem;color:var(--tm);width:30px;text-align:right;flex-shrink:0}
+.ptbdg{font-family:var(--fm);font-size:.56rem;padding:2px 6px;flex-shrink:0}
+.phi{background:rgba(255,36,36,.15);color:var(--red);border:1px solid rgba(255,36,36,.3)}
+.pmi{background:rgba(232,255,0,.1);color:var(--yel);border:1px solid rgba(232,255,0,.3)}
+.pli{background:rgba(57,255,20,.1);color:var(--lime);border:1px solid rgba(57,255,20,.25)}
+/* Sentiment rows */
+.srow{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sfeat{font-family:var(--fm);font-size:.66rem;color:var(--t2);width:70px;flex-shrink:0}
+.spos{font-family:var(--fm);font-size:.64rem;color:var(--lime);width:40px;text-align:right;flex-shrink:0}
+.sneg{font-family:var(--fm);font-size:.64rem;color:var(--red);width:38px;text-align:right;flex-shrink:0}
+.snbw{flex:1;height:6px;background:rgba(255,36,36,.1);overflow:hidden}
+.snbf{height:100%;background:var(--red);width:0%;transition:width 1.2s ease}
+/* Timeline mini */
+.tcard{background:var(--bgc);border:1.5px solid rgba(255,255,255,.08);overflow:hidden}
+.tlbars{display:flex;align-items:flex-end;gap:2px;height:80px;padding:12px 18px 6px}
+.tlbg{flex:1;display:flex;flex-direction:column;align-items:stretch;gap:1px;height:100%}
+.tlbp{background:rgba(57,255,20,.55);min-height:2px}
+.tlbn{background:rgba(255,36,36,.55);min-height:1px}
+.tllabs{display:flex;padding:0 18px 12px;gap:2px}
+.tllb{flex:1;font-family:var(--fm);font-size:.44rem;color:var(--tm);text-align:center;overflow:hidden}
+.rcmd{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;background:rgba(255,255,255,.02);border-top:1px solid rgba(255,255,255,.05)}
+.rcmdt{font-family:var(--fm);font-size:.62rem;color:var(--tm)}
+.rcmdb{font-family:var(--fm);font-size:.6rem;color:var(--lime);border:1px solid rgba(57,255,20,.3);padding:3px 10px;text-decoration:none;transition:background .15s}
+.rcmdb:hover{background:rgba(57,255,20,.1)}
+
+/* ══════════════════════════════════════════
+   TECH STACK
+══════════════════════════════════════════ */
+#techstack{padding:110px 0;background:var(--bg1)}
+.tgrid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,.08);border-left:1px solid rgba(255,255,255,.08);margin-bottom:16px}
+.titem{padding:20px 16px;border-right:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);transition:all .15s;cursor:default}
+.titem:hover{background:rgba(255,255,255,.03)}
+.titem:hover .tname{color:var(--lime)}
+.tcat{font-family:var(--fm);font-size:.54rem;color:var(--tm);letter-spacing:1.5px;display:block;margin-bottom:8px}
+.tname{font-family:var(--fm);font-size:.95rem;font-weight:700;color:var(--t1);letter-spacing:.5px;transition:color .15s}
+.titem.ft{background:rgba(57,255,20,.04);border-color:rgba(57,255,20,.2)}
+.titem.ft .tname{color:var(--lime)}.titem.ft .tcat{color:rgba(57,255,20,.6)}
+.tfooter{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid rgba(255,255,255,.06)}
+.tfstat{font-family:var(--fm);font-size:.6rem;color:var(--tm)}
+
+/* ══════════════════════════════════════════
+   GITHUB CTA
+══════════════════════════════════════════ */
+#github{padding:120px 0 90px;text-align:center;border-top:1px solid rgba(255,255,255,.06);background:var(--bg0)}
+.ghbadge{font-family:var(--fm);font-size:.6rem;color:var(--tm);letter-spacing:2px;margin-bottom:28px;display:flex;align-items:center;justify-content:center;gap:18px}
+.ghbadge::before,.ghbadge::after{content:'';display:block;height:1px;width:60px;background:rgba(255,255,255,.1)}
+.ghtitle{font-family:var(--fd);font-size:clamp(2rem,5vw,4rem);font-weight:900;line-height:1;margin-bottom:16px;letter-spacing:-1.5px}
+.ghtitle .lm{color:var(--lime)}
+.ghsub{font-family:var(--fm);font-size:.82rem;color:var(--t2);max-width:460px;margin:0 auto 40px;line-height:1.8}
+.ghctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:36px}
+.ghclone{background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.1);padding:14px 22px;max-width:540px;margin:0 auto;text-align:left}
+.ghct{font-family:var(--fm);font-size:.74rem;color:var(--lime);line-height:2.1}
+.ghcp{color:var(--tm)}
+.ghfoot{font-family:var(--fm);font-size:.6rem;color:var(--tm);margin-top:48px;letter-spacing:1px}
+
+/* Responsive */
+@media(max-width:880px){
+  .wrap,.ni{padding:0 22px}
+  .hinner,.ov-grid,.plwrap,.results-grid{grid-template-columns:1fr}
+  .hcard,.hbg,.geos{display:none}
+  .tgrid{grid-template-columns:repeat(2,1fr)}
+  .nlinks{display:none}
+  .sh h2{font-size:1.8rem}
+  .pldtl{position:static}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="ni">
+    <a href="#hero" class="nlogo">GFPE.SH</a>
+    <ul class="nlinks">
+      <li><a href="#overview">/OVERVIEW</a></li>
+      <li><a href="#pipeline">/PIPELINE</a></li>
+      <li><a href="#results">/RESULTS</a></li>
+      <li><a href="#techstack">/STACK</a></li>
+    </ul>
+    <a href="https://github.com/yourusername/game-feature-prioritization-engine" target="_blank" class="ncta">&#8599; GITHUB</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="hero" class="dot-d" style="background:var(--bg0)">
+  <div class="scan"></div>
+  <div class="geos">
+    <div class="gs gs1"></div><div class="gs gs2"></div>
+    <div class="gs gs3"></div><div class="gs gs4"></div>
+  </div>
+  <div class="hbg">NLP</div>
+  <div class="wrap">
+    <div class="hinner">
+      <div>
+        <div style="margin-bottom:26px" class="rv"><div class="sbadge"><span class="sdot"></span>SYSTEM STATUS: ONLINE</div></div>
+        <h1 class="htitle rv d1">
+          <span class="lf">GAME FEATURE</span>
+          <span class="lo">PRIORITIZATION_</span>
+          <span class="la">ENGINE</span>
+        </h1>
+        <div class="htag rv d2">NLP &middot; TF-IDF &middot; K-MEANS &middot; VADER SENTIMENT &middot; scikit-learn</div>
+        <div class="hctas rv d3">
+          <a href="#pipeline" class="btn bp">&#9654; EXPLORE PIPELINE</a>
+          <a href="dashboard/index.html" class="btn bo">&#8599; VIEW DASHBOARD</a>
+        </div>
+      </div>
+      <div class="hcard rv d2">
+        <span class="ml">_dataset_overview</span>
+        <div class="hmetrics">
+          <div class="hm"><div class="hmv" data-cu="287937">0</div><div class="hml">TOTAL_REVIEWS</div></div>
+          <div class="hm"><div class="hmv lm" data-cu="84.1" data-dc="1" data-sfx="%">0%</div><div class="hml">POSITIVE_RATE</div></div>
+          <div class="hm"><div class="hmv" data-cu="10">0</div><div class="hml">CATEGORIES</div></div>
+          <div class="hm"><div class="hmv" data-cu="109603">0</div><div class="hml">BUG_REVIEWS</div></div>
+        </div>
+        <div class="term">
+          <div class="th"><span class="tdot red"></span><span class="tdot yel"></span><span class="tdot grn"></span><span class="tt">run_pipeline.py</span></div>
+          <div class="tb" style="padding:10px 16px;font-size:.72rem">
+            <span class="tl tc"># Game Feature Prioritization Engine v1.0</span>
+            <span class="tl ti">&gt;_ python run_pipeline.py --game cyberpunk2077</span>
+            <span class="tl ts">[&#10003;] 287,937 reviews loaded &mdash; pipeline complete</span>
+            <span class="tl ts">[&#10003;] NPC_AI ranked #1. Priority report ready.</span>
+            <span class="tcur"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ OVERVIEW (Problem + Dataset merged) ══ -->
+<section id="overview" class="light dot-l">
+  <div class="wrap">
+    <div class="sh rv">
+      <div class="shr">
+        <h2>PROJECT_<span style="color:#CC1A1A">OVERVIEW</span></h2>
+        <div class="ss"><span class="sdot r"></span>/// 287,937 REVIEWS ANALYZED</div>
+      </div>
+      <div class="sd"></div>
+    </div>
+
+    <div class="ov-grid">
+      <!-- Left: Problem -->
+      <div class="ov-left">
+        <div class="pbig rv">
+          <div class="pn">287,937</div>
+          <div class="ps">Steam Reviews &middot; Cyberpunk 2077 &middot; 2020&ndash;2023</div>
+        </div>
+        <div class="pcards">
+          <div class="pcard c1 rv d1">
+            <span class="pc-num">01 // BOTTLENECK</span>
+            <div class="pc-title">Manual Review Takes Months</div>
+            <div class="pc-body">No team can read 287,937 reviews and extract structured insights. The analysis must be automated.</div>
+          </div>
+          <div class="pcard c2 rv d2">
+            <span class="pc-num">02 // BLINDSPOT</span>
+            <div class="pc-title">No Structured Sentiment Data</div>
+            <div class="pc-body">Raw text doesn&apos;t reveal which features players hate or love. The signal is buried in noise.</div>
+          </div>
+          <div class="pcard c3 rv d3">
+            <span class="pc-num">03 // DECISION FAIL</span>
+            <div class="pc-title">Developers Guess at Priorities</div>
+            <div class="pc-body">Without data-driven scoring, studios rely on gut instinct and misallocate engineering effort.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Dataset -->
+      <div class="ov-right rv d2">
+        <div class="dcard">
+          <div class="dcard-title">CYBERPUNK 2077</div>
+          <div class="dcard-sub">game_id: 1091500 &middot; platform: Steam</div>
+          <div class="dprops">
+            <div class="dprop"><span class="dpk">raw_reviews</span><span class="dpv">311,349</span></div>
+            <div class="dprop"><span class="dpk">after_cleaning</span><span class="dpv g">287,937</span></div>
+            <div class="dprop"><span class="dpk">language_filter</span><span class="dpv">english_only</span></div>
+            <div class="dprop"><span class="dpk">date_range</span><span class="dpv">2020-12 &rarr; 2023-12</span></div>
+            <div class="dprop"><span class="dpk">avg_helpful_votes</span><span class="dpv">5.21 per review</span></div>
+            <div class="dprop"><span class="dpk">file_format</span><span class="dpv">CSV &middot; JSON</span></div>
+          </div>
+        </div>
+        <div class="dmetrics">
+          <div class="dtile lm"><div class="dtv" data-cu-l="287937">287,937</div><div class="dtl">TOTAL_REVIEWS</div></div>
+          <div class="dtile cy"><div class="dtv">84.1%</div><div class="dtl">POSITIVE_RATE</div></div>
+          <div class="dtile ye"><div class="dtv" data-cu-l="10">10</div><div class="dtl">FEATURE_CATS</div></div>
+          <div class="dtile re"><div class="dtv" data-cu-l="109603">109,603</div><div class="dtl">BUG_RELATED</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Solution strip -->
+    <div class="sol-strip rv">
+      <div class="sol-icon">&#9881;</div>
+      <div class="sol-text">
+        The solution: an automated <span class="hl">NLP pipeline</span> that reads every review,
+        categorizes each into 10 feature areas, measures <span class="hl">VADER sentiment</span>,
+        and outputs a developer-ready <span class="hl">priority roadmap</span> &mdash; in minutes, not months.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ML PIPELINE ══ -->
+<section id="pipeline" style="background:var(--bg1);padding:110px 0">
+  <div class="wrap">
+    <div class="sh rv">
+      <div class="shr">
+        <h2>ML_PIPELINE_<span class="cy">FLOW</span></h2>
+        <div class="ss"><span class="sdot c"></span>/// 5 STAGES &middot; CLICK TO EXPLORE</div>
+      </div>
+      <div class="sd"></div>
+    </div>
+    <div class="plwrap">
+      <div class="plstages rvl" id="plstages"></div>
+      <div class="pldtl rvr" id="pldtl"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ RESULTS DASHBOARD ══ -->
+<section id="results" style="padding:110px 0;background:var(--bg0)">
+  <div class="wrap">
+    <div class="sh rv">
+      <div class="shr">
+        <h2>RESULTS_<span class="lm">DASHBOARD</span></h2>
+        <div class="ss"><span class="sdot"></span>/// LIVE DATA</div>
+      </div>
+      <div class="sd"></div>
+    </div>
+
+    <div class="results-grid rv">
+      <div class="rcard">
+        <div class="rch"><span class="rct">PRIORITY_SCORE_RANKING</span><span class="rct" style="color:var(--lime)">TOP 10</span></div>
+        <div class="rcb" id="priority-rows"></div>
+        <div class="rcmd"><span class="rcmdt">&gt;_ python priority.py --output report</span><a href="dashboard/index.html" class="rcmdb">VIEW_DB &rarr;</a></div>
+      </div>
+      <div class="rcard">
+        <div class="rch"><span class="rct">SENTIMENT_MATRIX</span><span class="rct" style="color:var(--cyan)">VADER_v3.3</span></div>
+        <div class="rcb" id="sentiment-rows"></div>
+        <div class="rcmd"><span class="rcmdt">&gt;_ sentiment_analysis.py --vader</span><a href="dashboard/index.html" class="rcmdb">VIEW_DB &rarr;</a></div>
+      </div>
+    </div>
+
+    <div class="tcard rv">
+      <div class="rch"><span class="rct">REVIEW_TIMELINE &mdash; Monthly Volume 2020&ndash;2023</span><span class="rct" style="color:var(--tm)">&#9646; POS &nbsp;&#9646; NEG</span></div>
+      <div class="tlbars" id="tlbars"></div>
+      <div class="tllabs" id="tllabs"></div>
+      <div class="rcmd"><span class="rcmdt">&gt;_ python timeline_analysis.py --monthly</span><a href="dashboard/index.html" class="rcmdb">FULL_CHART &rarr;</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TECH STACK ══ -->
+<section id="techstack" style="padding:110px 0;background:var(--bg1)">
+  <div class="wrap">
+    <div class="sh rv">
+      <div class="shr">
+        <h2>TECH_<span class="lm">STACK</span></h2>
+        <div class="ss"><span class="sdot"></span>/// SYSTEM_OPTIMIZED</div>
+      </div>
+      <div class="sd"></div>
+    </div>
+    <div class="tgrid rv">
+      <div class="titem ft"><span class="tcat">&gt;_nlp</span><span class="tname">NLTK</span></div>
+      <div class="titem"><span class="tcat">&gt;_ml_framework</span><span class="tname">SCIKIT-LEARN</span></div>
+      <div class="titem"><span class="tcat">&gt;_data</span><span class="tname">PANDAS</span></div>
+      <div class="titem"><span class="tcat">&gt;_visualization</span><span class="tname">CHART.JS</span></div>
+      <div class="titem"><span class="tcat">&gt;_sentiment</span><span class="tname">VADER</span></div>
+      <div class="titem"><span class="tcat">&gt;_vectorization</span><span class="tname">TF-IDF</span></div>
+      <div class="titem"><span class="tcat">&gt;_clustering</span><span class="tname">K-MEANS</span></div>
+      <div class="titem"><span class="tcat">&gt;_runtime</span><span class="tname">PYTHON 3.11</span></div>
+      <div class="titem"><span class="tcat">&gt;_notebook</span><span class="tname">JUPYTER</span></div>
+      <div class="titem"><span class="tcat">&gt;_versioning</span><span class="tname">GIT</span></div>
+      <div class="titem"><span class="tcat">&gt;_data_source</span><span class="tname">STEAM API</span></div>
+      <div class="titem"><span class="tcat">&gt;_format</span><span class="tname">CSV / JSON</span></div>
+    </div>
+    <div class="tfooter rv"><span class="tfstat">TOTAL_TOOLS: 12</span><span class="tfstat">DATASET_SIZE: 2.3GB</span><span class="tfstat">MEMORY_USAGE: ~4GB</span></div>
+  </div>
+</section>
+
+<!-- ══ GITHUB CTA ══ -->
+<section id="github" class="dot-d">
+  <div class="wrap">
+    <div class="ghbadge rv">OPEN SOURCE PROJECT</div>
+    <div class="ghtitle rv d1">PROJECT_<span class="lm">REPOSITORY</span></div>
+    <p class="ghsub rv d2">287,937 Steam reviews &rarr; developer-ready priority roadmap.<br>Open source, fully documented, ready to run.</p>
+    <div class="ghctas rv d3">
+      <a href="https://github.com/yourusername/game-feature-prioritization-engine" target="_blank" class="btn bp">&#8599; STAR ON GITHUB</a>
+      <a href="dashboard/index.html" class="btn bo">&#128202; VIEW DASHBOARD</a>
+    </div>
+    <div class="ghclone rv d4">
+      <div class="ghct">
+        <span class="ghcp">$ </span>git clone https://github.com/yourusername/game-feature-prioritization-engine<br>
+        <span class="ghcp">$ </span>pip install -r requirements.txt<br>
+        <span class="ghcp">$ </span>python run_pipeline.py --game cyberpunk2077 --reviews all
+      </div>
+    </div>
+    <div class="ghfoot rv">GFPE.SH &middot; Python &middot; NLP &middot; ML &middot; Chart.js &middot; 287,937 reviews analyzed</div>
+  </div>
+</section>
+
+<script>
+/* DATA */
+const PRI=[{n:'NPC_AI',s:9.50,w:100,t:'HI'},{n:'UI_UX',s:8.06,w:73.2,t:'HI'},{n:'COMBAT',s:7.03,w:54,t:'HI'},{n:'OPEN_WORLD',s:5.40,w:23.6,t:'MD'},{n:'PERFORMANCE',s:5.30,w:21.7,t:'MD'},{n:'AUDIO',s:4.88,w:13.9,t:'MD'},{n:'BUGS',s:4.62,w:9,t:'MD'},{n:'GRAPHICS',s:4.24,w:1.8,t:'LO'},{n:'GAMEPLAY',s:4.18,w:0.8,t:'LO'},{n:'STORY',s:4.14,w:0,t:'LO'}];
+const SENT=[{n:'NPC_AI',p:69.5,ng:28.7},{n:'UI_UX',p:72.8,ng:25.3},{n:'COMBAT',p:76.2,ng:22.2},{n:'OPEN_WORLD',p:79.6,ng:17.5},{n:'PERF',p:79.5,ng:18.2},{n:'AUDIO',p:82.6,ng:15.6},{n:'BUGS',p:79,ng:16.3},{n:'GRAPHICS',p:83.5,ng:13.9},{n:'GAMEPLAY',p:84.3,ng:14.3},{n:'STORY',p:83.1,ng:14.1}];
+const TL=[{m:'20-12',p:110496,ng:22802},{m:'21-01',p:15617,ng:4049},{m:'21-03',p:2740,ng:1329},{m:'21-06',p:1655,ng:697},{m:'21-11',p:7464,ng:1109},{m:'22-01',p:2500,ng:635},{m:'22-03',p:2027,ng:244},{m:'22-09',p:6824,ng:705},{m:'22-10',p:6858,ng:600},{m:'22-11',p:6710,ng:417},{m:'23-01',p:4396,ng:593},{m:'23-04',p:2562,ng:449},{m:'23-09',p:7411,ng:872},{m:'23-10',p:10179,ng:773},{m:'23-11',p:4733,ng:356},{m:'23-12',p:2837,ng:259}];
+const STG=[
+  {num:'01',t:'DATA_CLEANING',d:'Filter 311,349 raw reviews down to 287,937 clean English-only records.',dh:'Cleaning 311K Reviews',ds:'Removing noise so the model trains on high-quality signal only.',stats:[{v:'311,349',l:'RAW_INPUT'},{v:'287,937',l:'CLEAN_OUTPUT',c:'lime'},{v:'23,412',l:'REMOVED',c:'re'},{v:'7.5%',l:'REDUCTION'}],cmd:'python cleaning.py --lang=en --dedup=True',logs:['[&#10003;] Language filter: -23,412','[&#10003;] Null removal: -312','[&#10003;] Deduplication: -100','[&#10003;] Output: 287,937 reviews']},
+  {num:'02',t:'TEXT_PREPROCESSING',d:'Lowercase, remove stopwords, lemmatize and tokenize all review text.',dh:'Normalizing Review Text',ds:'Transforming raw strings into clean, consistent tokens for vectorization.',stats:[{v:'287,937',l:'INPUT_REVIEWS'},{v:'~47',l:'AVG_TOKENS/REVIEW',c:'cy'}],cmd:'python preprocess.py --lemmatize --stopwords',logs:['[&#10003;] Lowercased all text','[&#10003;] Removed 179 stopwords','[&#10003;] spaCy lemmatization applied','[&#10003;] Tokenization complete']},
+  {num:'03',t:'TF-IDF + CATEGORIES',d:'Extract 5,000 TF-IDF features, then map reviews to 10 feature categories via regex taxonomy.',dh:'Feature Extraction',ds:'5,000 features extracted. Top keyword: "game" (score: 0.052).',stats:[{v:'5,000',l:'MAX_FEATURES',c:'cy'},{v:'10',l:'CATEGORIES'},{v:'0.052',l:'TOP_TFIDF ("game")'},{v:'(1,2)',l:'NGRAM_RANGE'}],cmd:'python vectorize.py --max_features=5000',logs:['[&#10003;] Vectorizer fitted','[&#10003;] Matrix: (287937, 5000)','[&#10003;] 10 categories mapped','[&#10003;] Saved: tfidf_vectorizer.pkl']},
+  {num:'04',t:'K-MEANS CLUSTERING',d:'8-cluster K-Means on a 50K sample to discover natural review themes unsupervised.',dh:'8 Theme Clusters Found',ds:'Silhouette score 0.72 confirms well-separated, meaningful clusters.',stats:[{v:'8',l:'N_CLUSTERS',c:'pu'},{v:'50,000',l:'SAMPLE_SIZE'},{v:'0.72',l:'SILHOUETTE',c:'lime'},{v:'k-means++',l:'INIT'}],cmd:'python cluster.py --n_clusters=8 --sample=50000',logs:['[&#10003;] K-Means fit on 50K sample','[&#10003;] Silhouette score: 0.72','[&#10003;] 8 clusters identified']},
+  {num:'05',t:'PRIORITY ENGINE',d:'Score = log(Mentions) &times; Neg_Ratio &times; Helpfulness_Weight &rarr; ranked developer roadmap.',dh:'Priority Roadmap Generated',ds:'NPC_AI ranks #1 with score 9.50 (100/100 normalized). 3 features are HIGH priority.',stats:[{v:'9.50',l:'TOP_SCORE (NPC_AI)',c:'re'},{v:'3',l:'HIGH_PRIORITY',c:'re'},{v:'4',l:'MEDIUM_PRIORITY'},{v:'10',l:'FEATURES_RANKED',c:'lime'}],cmd:'python priority.py --output report.csv',logs:['[&#10003;] VADER scored 287,937 reviews','[&#10003;] #1 NPC_AI &mdash; 9.50 HIGH','[&#10003;] #2 UI_UX &mdash; 8.06 HIGH','[&#10003;] Saved: feature_priority_report.csv']}
+];
+
+/* RENDER PIPELINE */
+function renderPipeline(){
+  const se=document.getElementById('plstages'),de=document.getElementById('pldtl');
+  if(!se||!de)return;
+  se.innerHTML=STG.map((s,i)=>`
+    <div class="plst">
+      <div class="plsl">
+        <div class="snc on" onclick="actStg(${i})">${s.num}</div>
+        ${i<4?'<div class="scon on"></div>':''}
+      </div>
+      <div class="plsc${i===0?' on':''}" style="${i===4?'border-left-color:var(--lime);':''}" onclick="actStg(${i})">
+        <div class="sttl">${s.t}</div>
+        <div class="stds">${s.d}</div>
+      </div>
+    </div>`).join('');
+  const vc={lime:'var(--lime)',re:'var(--red)',cy:'var(--cyan)',pu:'var(--pur)'};
+  de.innerHTML=STG.map((s,i)=>`
+    <div class="pdp${i===0?' on':''}" id="pdp${i}">
+      <span class="ml">_stage_${s.num} // ${s.t}</span>
+      <div class="pdh">${s.dh}</div>
+      <div class="pds">${s.ds}</div>
+      ${i===4?`<div class="formula">Priority Score = log(Mentions) &times; Negative_Ratio &times; Helpfulness_Weight</div>`:''}
+      <div class="pdstats">${s.stats.map(st=>`<div class="pdstat"><div class="pdsv${st.c?' '+st.c:''}" style="${st.c?'color:'+vc[st.c]:''}">${st.v}</div><div class="pdsl">${st.l}</div></div>`).join('')}</div>
+      <div class="term">
+        <div class="th"><span class="tdot red"></span><span class="tdot yel"></span><span class="tdot grn"></span><span class="tt">${s.cmd.split(' ')[1]}</span></div>
+        <div class="tb" style="padding:10px 16px;font-size:.71rem">
+          <span class="tl ti">&gt;_ ${s.cmd}</span>
+          ${s.logs.map(l=>`<span class="tl ts">${l}</span>`).join('')}
+          <span class="tcur"></span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function actStg(n){
+  document.querySelectorAll('.pdp').forEach((p,i)=>p.classList.toggle('on',i===n));
+  document.querySelectorAll('.plsc').forEach((c,i)=>{
+    c.classList.toggle('on',i===n);
+    if(i===4)c.style.borderLeftColor='var(--lime)';
+  });
+}
+
+/* RENDER PRIORITY */
+function renderPriority(){
+  const el=document.getElementById('priority-rows');if(!el)return;
+  const tc={HI:'phi',MD:'pmi',LO:'pli'},bc={HI:'hi',MD:'md',LO:'lo'};
+  el.innerHTML=PRI.map((d,i)=>`
+    <div class="prow">
+      <span class="prnk">0${i+1}</span>
+      <span class="prnm">${d.n}</span>
+      <div class="prbw"><div class="prb ${bc[d.t]}" data-w="${d.w}"></div></div>
+      <span class="prs">${d.s}</span>
+      <span class="ptbdg ${tc[d.t]}">${d.t}</span>
+    </div>`).join('');
+}
+
+/* RENDER SENTIMENT */
+function renderSentiment(){
+  const el=document.getElementById('sentiment-rows');if(!el)return;
+  el.innerHTML=SENT.map(d=>`
+    <div class="srow">
+      <span class="sfeat">${d.n}</span>
+      <span class="spos">+${d.p}%</span>
+      <span class="sneg">-${d.ng}%</span>
+      <div class="snbw"><div class="snbf" data-w="${d.ng/35*100}"></div></div>
+    </div>`).join('');
+}
+
+/* RENDER TIMELINE */
+function renderTimeline(){
+  const be=document.getElementById('tlbars'),le=document.getElementById('tllabs');if(!be)return;
+  be.innerHTML=TL.map(d=>{
+    const t=d.p+d.ng,pf=(d.p/t*100).toFixed(1),nf=(d.ng/t*100).toFixed(1);
+    return`<div class="tlbg" title="${d.m}: ${t.toLocaleString()}"><div class="tlbp" style="flex:${pf}"></div><div class="tlbn" style="flex:${nf}"></div></div>`;
+  }).join('');
+  if(le)le.innerHTML=TL.map(d=>`<div class="tllb">${d.m}</div>`).join('');
+}
+
+/* COUNT UP */
+function countUp(el,target,dur,dec,sfx){
+  sfx=sfx||'';const s=performance.now();
+  (function run(now){
+    const p=Math.min((now-s)/dur,1),e=1-Math.pow(1-p,3),v=target*e;
+    el.textContent=dec?v.toFixed(1)+sfx:Math.floor(v).toLocaleString()+sfx;
+    p<1?requestAnimationFrame(run):el.textContent=dec?target.toFixed(1)+sfx:target.toLocaleString()+sfx;
+  })(performance.now());
+}
+
+/* ANIMATE BARS + COUNTS */
+function animEl(root){
+  root.querySelectorAll('[data-w]').forEach(b=>setTimeout(()=>{b.style.width=parseFloat(b.dataset.w)+'%';},80));
+  root.querySelectorAll('[data-cu]').forEach(el=>countUp(el,parseFloat(el.dataset.cu),1800,!!el.dataset.dc,el.dataset.sfx));
+}
+
+/* OBSERVER */
+function initObs(){
+  const ro=new IntersectionObserver(es=>{
+    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target);}});
+  },{threshold:.1,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>ro.observe(el));
+
+  const do2=new IntersectionObserver(es=>{
+    es.forEach(e=>{if(!e.isIntersecting)return;animEl(e.target);do2.unobserve(e.target);});
+  },{threshold:.15});
+  document.querySelectorAll('section').forEach(el=>do2.observe(el));
+}
+
+/* INIT */
+document.addEventListener('DOMContentLoaded',()=>{
+  renderPipeline();renderPriority();renderSentiment();renderTimeline();initObs();
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('sc',scrollY>60),{passive:true});
+  // Hero entry
+  document.querySelectorAll('#hero .rv').forEach((el,i)=>setTimeout(()=>el.classList.add('on'),80+i*160));
+  // Hero countups
+  setTimeout(()=>{
+    document.querySelectorAll('.hcard [data-cu]').forEach(el=>countUp(el,parseFloat(el.dataset.cu),2000,!!el.dataset.dc,el.dataset.sfx));
+  },700);
+  // Light section countups (trigger immediately since no observer on light tiles)
+  setTimeout(()=>{
+    document.querySelectorAll('[data-cu-l]').forEach(el=>{
+      const obs=new IntersectionObserver(es=>{
+        es.forEach(e=>{if(e.isIntersecting){countUp(el,parseFloat(el.dataset.cuL),1600);obs.unobserve(e.target);}});
+      },{threshold:.5});
+      obs.observe(el);
+    });
+  },500);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1046 @@
+{
+  "meta": {
+    "game": "Cyberpunk 2077",
+    "total_reviews": 287937,
+    "total_positive": 242154,
+    "total_negative": 45783,
+    "features_analyzed": 10,
+    "overall_positive_rate": 84.1
+  },
+  "priority_report": [
+    {
+      "category": "NPC_AI",
+      "total_mentions": 22481,
+      "positive": 15612,
+      "negative": 6441,
+      "neutral": 428,
+      "pos_ratio": 0.6945,
+      "neg_ratio": 0.2865,
+      "avg_compound": 0.3702,
+      "avg_helpful_votes": 9.05,
+      "priority_score": 9.495593624228528,
+      "priority_score_normalized": 100.0,
+      "priority_tier": "\ud83d\udd34 High",
+      "tier_label": "High"
+    },
+    {
+      "category": "UI_UX",
+      "total_mentions": 10406,
+      "positive": 7575,
+      "negative": 2635,
+      "neutral": 196,
+      "pos_ratio": 0.7279,
+      "neg_ratio": 0.2532,
+      "avg_compound": 0.426,
+      "avg_helpful_votes": 10.49,
+      "priority_score": 8.06048734415077,
+      "priority_score_normalized": 73.2064061470113,
+      "priority_tier": "\ud83d\udd34 High",
+      "tier_label": "High"
+    },
+    {
+      "category": "Combat",
+      "total_mentions": 37797,
+      "positive": 28790,
+      "negative": 8391,
+      "neutral": 616,
+      "pos_ratio": 0.7617,
+      "neg_ratio": 0.222,
+      "avg_compound": 0.4809,
+      "avg_helpful_votes": 6.43,
+      "priority_score": 7.032577499518499,
+      "priority_score_normalized": 54.0152150297419,
+      "priority_tier": "\ud83d\udd34 High",
+      "tier_label": "High"
+    },
+    {
+      "category": "Open_World",
+      "total_mentions": 57518,
+      "positive": 45794,
+      "negative": 10086,
+      "neutral": 1638,
+      "pos_ratio": 0.7962,
+      "neg_ratio": 0.1754,
+      "avg_compound": 0.5417,
+      "avg_helpful_votes": 5.11,
+      "priority_score": 5.401694497149383,
+      "priority_score_normalized": 23.56644799845743,
+      "priority_tier": "\ud83d\udfe1 Medium",
+      "tier_label": "Medium"
+    },
+    {
+      "category": "Performance",
+      "total_mentions": 32874,
+      "positive": 26134,
+      "negative": 5969,
+      "neutral": 771,
+      "pos_ratio": 0.795,
+      "neg_ratio": 0.1816,
+      "avg_compound": 0.5351,
+      "avg_helpful_votes": 5.09,
+      "priority_score": 5.300986249222478,
+      "priority_score_normalized": 21.68621380949313,
+      "priority_tier": "\ud83d\udfe1 Medium",
+      "tier_label": "Medium"
+    },
+    {
+      "category": "Audio",
+      "total_mentions": 12605,
+      "positive": 10413,
+      "negative": 1964,
+      "neutral": 228,
+      "pos_ratio": 0.8261,
+      "neg_ratio": 0.1558,
+      "avg_compound": 0.6016,
+      "avg_helpful_votes": 9.17,
+      "priority_score": 4.883073459305102,
+      "priority_score_normalized": 13.883735543974796,
+      "priority_tier": "\ud83d\udfe1 Medium",
+      "tier_label": "Medium"
+    },
+    {
+      "category": "Bugs",
+      "total_mentions": 109603,
+      "positive": 86546,
+      "negative": 17828,
+      "neutral": 5229,
+      "pos_ratio": 0.7896,
+      "neg_ratio": 0.1627,
+      "avg_compound": 0.5135,
+      "avg_helpful_votes": 3.25,
+      "priority_score": 4.619962062669213,
+      "priority_score_normalized": 8.971416507106909,
+      "priority_tier": "\ud83d\udfe1 Medium",
+      "tier_label": "Medium"
+    },
+    {
+      "category": "Graphics",
+      "total_mentions": 64950,
+      "positive": 54238,
+      "negative": 9056,
+      "neutral": 1656,
+      "pos_ratio": 0.8351,
+      "neg_ratio": 0.1394,
+      "avg_compound": 0.5979,
+      "avg_helpful_votes": 4.71,
+      "priority_score": 4.236030621679744,
+      "priority_score_normalized": 1.8033738052749777,
+      "priority_tier": "\ud83d\udfe2 Low",
+      "tier_label": "Low"
+    },
+    {
+      "category": "Gameplay",
+      "total_mentions": 82195,
+      "positive": 69298,
+      "negative": 11734,
+      "neutral": 1163,
+      "pos_ratio": 0.8431,
+      "neg_ratio": 0.1428,
+      "avg_compound": 0.5828,
+      "avg_helpful_votes": 3.89,
+      "priority_score": 4.181026642115035,
+      "priority_score_normalized": 0.776443389588245,
+      "priority_tier": "\ud83d\udfe2 Low",
+      "tier_label": "Low"
+    },
+    {
+      "category": "Story",
+      "total_mentions": 84305,
+      "positive": 70031,
+      "negative": 11923,
+      "neutral": 2351,
+      "pos_ratio": 0.8307,
+      "neg_ratio": 0.1414,
+      "avg_compound": 0.5873,
+      "avg_helpful_votes": 3.86,
+      "priority_score": 4.139439134644526,
+      "priority_score_normalized": 0.0,
+      "priority_tier": "\ud83d\udfe2 Low",
+      "tier_label": "Low"
+    }
+  ],
+  "sentiment_by_feature": [
+    {
+      "category": "Bugs",
+      "total_mentions": 109603,
+      "positive": 86546,
+      "negative": 17828,
+      "neutral": 5229,
+      "avg_compound": 0.5135,
+      "pos_ratio": 0.7896,
+      "neg_ratio": 0.1627,
+      "voted_positive": 85662,
+      "voted_negative": 23941,
+      "avg_helpful_votes": 3.25
+    },
+    {
+      "category": "Story",
+      "total_mentions": 84305,
+      "positive": 70031,
+      "negative": 11923,
+      "neutral": 2351,
+      "avg_compound": 0.5873,
+      "pos_ratio": 0.8307,
+      "neg_ratio": 0.1414,
+      "voted_positive": 69113,
+      "voted_negative": 15192,
+      "avg_helpful_votes": 3.86
+    },
+    {
+      "category": "Gameplay",
+      "total_mentions": 82195,
+      "positive": 69298,
+      "negative": 11734,
+      "neutral": 1163,
+      "avg_compound": 0.5828,
+      "pos_ratio": 0.8431,
+      "neg_ratio": 0.1428,
+      "voted_positive": 66915,
+      "voted_negative": 15280,
+      "avg_helpful_votes": 3.89
+    },
+    {
+      "category": "Graphics",
+      "total_mentions": 64950,
+      "positive": 54238,
+      "negative": 9056,
+      "neutral": 1656,
+      "avg_compound": 0.5979,
+      "pos_ratio": 0.8351,
+      "neg_ratio": 0.1394,
+      "voted_positive": 53245,
+      "voted_negative": 11705,
+      "avg_helpful_votes": 4.71
+    },
+    {
+      "category": "Open_World",
+      "total_mentions": 57518,
+      "positive": 45794,
+      "negative": 10086,
+      "neutral": 1638,
+      "avg_compound": 0.5417,
+      "pos_ratio": 0.7962,
+      "neg_ratio": 0.1754,
+      "voted_positive": 45404,
+      "voted_negative": 12114,
+      "avg_helpful_votes": 5.11
+    },
+    {
+      "category": "Combat",
+      "total_mentions": 37797,
+      "positive": 28790,
+      "negative": 8391,
+      "neutral": 616,
+      "avg_compound": 0.4809,
+      "pos_ratio": 0.7617,
+      "neg_ratio": 0.222,
+      "voted_positive": 28340,
+      "voted_negative": 9457,
+      "avg_helpful_votes": 6.43
+    },
+    {
+      "category": "Performance",
+      "total_mentions": 32874,
+      "positive": 26134,
+      "negative": 5969,
+      "neutral": 771,
+      "avg_compound": 0.5351,
+      "pos_ratio": 0.795,
+      "neg_ratio": 0.1816,
+      "voted_positive": 24879,
+      "voted_negative": 7995,
+      "avg_helpful_votes": 5.09
+    },
+    {
+      "category": "NPC_AI",
+      "total_mentions": 22481,
+      "positive": 15612,
+      "negative": 6441,
+      "neutral": 428,
+      "avg_compound": 0.3702,
+      "pos_ratio": 0.6945,
+      "neg_ratio": 0.2865,
+      "voted_positive": 14083,
+      "voted_negative": 8398,
+      "avg_helpful_votes": 9.05
+    },
+    {
+      "category": "Audio",
+      "total_mentions": 12605,
+      "positive": 10413,
+      "negative": 1964,
+      "neutral": 228,
+      "avg_compound": 0.6016,
+      "pos_ratio": 0.8261,
+      "neg_ratio": 0.1558,
+      "voted_positive": 10214,
+      "voted_negative": 2391,
+      "avg_helpful_votes": 9.17
+    },
+    {
+      "category": "UI_UX",
+      "total_mentions": 10406,
+      "positive": 7575,
+      "negative": 2635,
+      "neutral": 196,
+      "avg_compound": 0.426,
+      "pos_ratio": 0.7279,
+      "neg_ratio": 0.2532,
+      "voted_positive": 6798,
+      "voted_negative": 3608,
+      "avg_helpful_votes": 10.49
+    }
+  ],
+  "keywords": {
+    "global": [
+      {
+        "keyword": "game",
+        "tfidf_score": 0.05210436029269368
+      },
+      {
+        "keyword": "good",
+        "tfidf_score": 0.04274983463057157
+      },
+      {
+        "keyword": "fun",
+        "tfidf_score": 0.02210940408043517
+      },
+      {
+        "keyword": "great",
+        "tfidf_score": 0.021596143963315956
+      },
+      {
+        "keyword": "bugs",
+        "tfidf_score": 0.019801091778074292
+      },
+      {
+        "keyword": "story",
+        "tfidf_score": 0.017660751430520552
+      },
+      {
+        "keyword": "like",
+        "tfidf_score": 0.01593504700681496
+      },
+      {
+        "keyword": "good game",
+        "tfidf_score": 0.013801094437362117
+      },
+      {
+        "keyword": "amazing",
+        "tfidf_score": 0.01347840485465899
+      },
+      {
+        "keyword": "yes",
+        "tfidf_score": 0.013421849550863731
+      },
+      {
+        "keyword": "still",
+        "tfidf_score": 0.012925910806214984
+      },
+      {
+        "keyword": "play",
+        "tfidf_score": 0.012217407203087782
+      },
+      {
+        "keyword": "love",
+        "tfidf_score": 0.012047913545275736
+      },
+      {
+        "keyword": "great game",
+        "tfidf_score": 0.011919234229481908
+      },
+      {
+        "keyword": "really",
+        "tfidf_score": 0.011476640862962639
+      },
+      {
+        "keyword": "time",
+        "tfidf_score": 0.010191799516303664
+      },
+      {
+        "keyword": "best",
+        "tfidf_score": 0.010099685340464412
+      },
+      {
+        "keyword": "get",
+        "tfidf_score": 0.009839972861557442
+      },
+      {
+        "keyword": "one",
+        "tfidf_score": 0.009396659075045577
+      },
+      {
+        "keyword": "buggy",
+        "tfidf_score": 0.009394154719333437
+      },
+      {
+        "keyword": "world",
+        "tfidf_score": 0.009084381184078515
+      },
+      {
+        "keyword": "better",
+        "tfidf_score": 0.009064224520979977
+      },
+      {
+        "keyword": "even",
+        "tfidf_score": 0.00897296640770089
+      },
+      {
+        "keyword": "nice",
+        "tfidf_score": 0.008970762541641156
+      },
+      {
+        "keyword": "cyberpunk",
+        "tfidf_score": 0.008870690085483345
+      },
+      {
+        "keyword": "worth",
+        "tfidf_score": 0.008825226762546325
+      },
+      {
+        "keyword": "dont",
+        "tfidf_score": 0.008518305986455137
+      },
+      {
+        "keyword": "games",
+        "tfidf_score": 0.008351168080940012
+      },
+      {
+        "keyword": "would",
+        "tfidf_score": 0.008257811624831694
+      },
+      {
+        "keyword": "much",
+        "tfidf_score": 0.008256441935957244
+      },
+      {
+        "keyword": "pretty",
+        "tfidf_score": 0.00808364279071979
+      },
+      {
+        "keyword": "im",
+        "tfidf_score": 0.007950913158439049
+      },
+      {
+        "keyword": "bad",
+        "tfidf_score": 0.007932419473997518
+      },
+      {
+        "keyword": "played",
+        "tfidf_score": 0.007844831285572453
+      },
+      {
+        "keyword": "awesome",
+        "tfidf_score": 0.0076263841656594895
+      },
+      {
+        "keyword": "far",
+        "tfidf_score": 0.007493003187922063
+      },
+      {
+        "keyword": "lot",
+        "tfidf_score": 0.0073398533808292366
+      },
+      {
+        "keyword": "hours",
+        "tfidf_score": 0.007250085126867356
+      },
+      {
+        "keyword": "playing",
+        "tfidf_score": 0.00716405843539623
+      },
+      {
+        "keyword": "recommend",
+        "tfidf_score": 0.007134833316579276
+      },
+      {
+        "keyword": "ive",
+        "tfidf_score": 0.007014900267832074
+      },
+      {
+        "keyword": "gameplay",
+        "tfidf_score": 0.006950993419437384
+      },
+      {
+        "keyword": "glitches",
+        "tfidf_score": 0.006869688405935396
+      },
+      {
+        "keyword": "pc",
+        "tfidf_score": 0.006838820441161598
+      },
+      {
+        "keyword": "city",
+        "tfidf_score": 0.006532689038281179
+      },
+      {
+        "keyword": "many",
+        "tfidf_score": 0.00640427284724907
+      },
+      {
+        "keyword": "well",
+        "tfidf_score": 0.0064017910498955
+      },
+      {
+        "keyword": "cant",
+        "tfidf_score": 0.006364427044552497
+      },
+      {
+        "keyword": "ever",
+        "tfidf_score": 0.006229760365244966
+      },
+      {
+        "keyword": "wait",
+        "tfidf_score": 0.0062264608258825495
+      }
+    ],
+    "positive": [
+      {
+        "keyword": "game",
+        "tfidf_score": 0.0527927354296051
+      },
+      {
+        "keyword": "good",
+        "tfidf_score": 0.04844640957162847
+      },
+      {
+        "keyword": "fun",
+        "tfidf_score": 0.02491767166018838
+      },
+      {
+        "keyword": "great",
+        "tfidf_score": 0.02451058342105289
+      },
+      {
+        "keyword": "bugs",
+        "tfidf_score": 0.019856869669173948
+      },
+      {
+        "keyword": "story",
+        "tfidf_score": 0.018414871337382455
+      },
+      {
+        "keyword": "good game",
+        "tfidf_score": 0.015880163608226992
+      },
+      {
+        "keyword": "yes",
+        "tfidf_score": 0.015600697492571211
+      },
+      {
+        "keyword": "amazing",
+        "tfidf_score": 0.015547870729824328
+      },
+      {
+        "keyword": "like",
+        "tfidf_score": 0.015227285920031775
+      },
+      {
+        "keyword": "great game",
+        "tfidf_score": 0.013863149800586718
+      },
+      {
+        "keyword": "love",
+        "tfidf_score": 0.013708713841020414
+      },
+      {
+        "keyword": "still",
+        "tfidf_score": 0.011994489263232393
+      },
+      {
+        "keyword": "play",
+        "tfidf_score": 0.011913833442419097
+      },
+      {
+        "keyword": "really",
+        "tfidf_score": 0.01152258837318414
+      },
+      {
+        "keyword": "best",
+        "tfidf_score": 0.01125665153443024
+      },
+      {
+        "keyword": "nice",
+        "tfidf_score": 0.010149222420332862
+      },
+      {
+        "keyword": "time",
+        "tfidf_score": 0.009750424199686298
+      },
+      {
+        "keyword": "one",
+        "tfidf_score": 0.009420569942282667
+      },
+      {
+        "keyword": "better",
+        "tfidf_score": 0.009215060073672624
+      },
+      {
+        "keyword": "cyberpunk",
+        "tfidf_score": 0.009098015368575761
+      },
+      {
+        "keyword": "world",
+        "tfidf_score": 0.009002158219918396
+      },
+      {
+        "keyword": "get",
+        "tfidf_score": 0.008988258657045466
+      },
+      {
+        "keyword": "worth",
+        "tfidf_score": 0.008946803159741643
+      },
+      {
+        "keyword": "awesome",
+        "tfidf_score": 0.008877082759125406
+      },
+      {
+        "keyword": "buggy",
+        "tfidf_score": 0.008482556190360035
+      },
+      {
+        "keyword": "pretty",
+        "tfidf_score": 0.008455432001535984
+      },
+      {
+        "keyword": "games",
+        "tfidf_score": 0.008358739356038756
+      },
+      {
+        "keyword": "played",
+        "tfidf_score": 0.008123020254881522
+      },
+      {
+        "keyword": "far",
+        "tfidf_score": 0.008000731310363874
+      },
+      {
+        "keyword": "much",
+        "tfidf_score": 0.007909442120722643
+      },
+      {
+        "keyword": "im",
+        "tfidf_score": 0.007801357677506441
+      },
+      {
+        "keyword": "would",
+        "tfidf_score": 0.007752143038003628
+      },
+      {
+        "keyword": "lot",
+        "tfidf_score": 0.007471304422242526
+      },
+      {
+        "keyword": "pc",
+        "tfidf_score": 0.00725759441436663
+      },
+      {
+        "keyword": "ive",
+        "tfidf_score": 0.0072186539340821
+      },
+      {
+        "keyword": "even",
+        "tfidf_score": 0.007192917999252009
+      },
+      {
+        "keyword": "playing",
+        "tfidf_score": 0.007151971112656102
+      },
+      {
+        "keyword": "dont",
+        "tfidf_score": 0.007091228251653521
+      },
+      {
+        "keyword": "glitches",
+        "tfidf_score": 0.0070313025273912345
+      }
+    ],
+    "negative": [
+      {
+        "keyword": "game",
+        "tfidf_score": 0.0484837645002472
+      },
+      {
+        "keyword": "like",
+        "tfidf_score": 0.019657605645922924
+      },
+      {
+        "keyword": "bugs",
+        "tfidf_score": 0.019507720929830275
+      },
+      {
+        "keyword": "even",
+        "tfidf_score": 0.018335355361607963
+      },
+      {
+        "keyword": "still",
+        "tfidf_score": 0.01782483980390976
+      },
+      {
+        "keyword": "bad",
+        "tfidf_score": 0.016804784668527625
+      },
+      {
+        "keyword": "dont",
+        "tfidf_score": 0.016024201195403737
+      },
+      {
+        "keyword": "cant",
+        "tfidf_score": 0.014447367214798243
+      },
+      {
+        "keyword": "get",
+        "tfidf_score": 0.014319671066594687
+      },
+      {
+        "keyword": "buggy",
+        "tfidf_score": 0.014188822076438946
+      },
+      {
+        "keyword": "play",
+        "tfidf_score": 0.013814091658460622
+      },
+      {
+        "keyword": "story",
+        "tfidf_score": 0.013694362734340031
+      },
+      {
+        "keyword": "good",
+        "tfidf_score": 0.01278798075620194
+      },
+      {
+        "keyword": "time",
+        "tfidf_score": 0.012513268623105573
+      },
+      {
+        "keyword": "buy",
+        "tfidf_score": 0.011309843255571501
+      },
+      {
+        "keyword": "many",
+        "tfidf_score": 0.011271639058740953
+      },
+      {
+        "keyword": "really",
+        "tfidf_score": 0.011234974141924335
+      },
+      {
+        "keyword": "would",
+        "tfidf_score": 0.010917439289554768
+      },
+      {
+        "keyword": "shit",
+        "tfidf_score": 0.010804448079222895
+      },
+      {
+        "keyword": "boring",
+        "tfidf_score": 0.010757854780375508
+      },
+      {
+        "keyword": "years",
+        "tfidf_score": 0.01042668385879143
+      },
+      {
+        "keyword": "much",
+        "tfidf_score": 0.010081531198552865
+      },
+      {
+        "keyword": "crashes",
+        "tfidf_score": 0.009995476686381717
+      },
+      {
+        "keyword": "wait",
+        "tfidf_score": 0.009793538485162533
+      },
+      {
+        "keyword": "world",
+        "tfidf_score": 0.009516843227108693
+      },
+      {
+        "keyword": "one",
+        "tfidf_score": 0.009270896855187661
+      },
+      {
+        "keyword": "fix",
+        "tfidf_score": 0.00914375074645036
+      },
+      {
+        "keyword": "cdpr",
+        "tfidf_score": 0.009031541325497256
+      },
+      {
+        "keyword": "money",
+        "tfidf_score": 0.00893236358897961
+      },
+      {
+        "keyword": "hours",
+        "tfidf_score": 0.008864980311610746
+      },
+      {
+        "keyword": "ai",
+        "tfidf_score": 0.00884600909274042
+      },
+      {
+        "keyword": "broken",
+        "tfidf_score": 0.00882875421057342
+      },
+      {
+        "keyword": "im",
+        "tfidf_score": 0.008737519059736087
+      },
+      {
+        "keyword": "feels",
+        "tfidf_score": 0.00847693567461992
+      },
+      {
+        "keyword": "games",
+        "tfidf_score": 0.0083113460053076
+      },
+      {
+        "keyword": "trash",
+        "tfidf_score": 0.008291516633729774
+      },
+      {
+        "keyword": "better",
+        "tfidf_score": 0.00827088592092582
+      },
+      {
+        "keyword": "worth",
+        "tfidf_score": 0.00818578037853038
+      },
+      {
+        "keyword": "recommend",
+        "tfidf_score": 0.008179608254264465
+      },
+      {
+        "keyword": "year",
+        "tfidf_score": 0.00804913215724416
+      }
+    ]
+  },
+  "timeline": [
+    {
+      "month": "2020-12",
+      "total": 133298,
+      "positive": 110496,
+      "negative": 22802
+    },
+    {
+      "month": "2021-01",
+      "total": 19666,
+      "positive": 15617,
+      "negative": 4049
+    },
+    {
+      "month": "2021-02",
+      "total": 5074,
+      "positive": 3727,
+      "negative": 1347
+    },
+    {
+      "month": "2021-03",
+      "total": 4069,
+      "positive": 2740,
+      "negative": 1329
+    },
+    {
+      "month": "2021-04",
+      "total": 3390,
+      "positive": 2479,
+      "negative": 911
+    },
+    {
+      "month": "2021-05",
+      "total": 2734,
+      "positive": 1922,
+      "negative": 812
+    },
+    {
+      "month": "2021-06",
+      "total": 2352,
+      "positive": 1655,
+      "negative": 697
+    },
+    {
+      "month": "2021-07",
+      "total": 2216,
+      "positive": 1618,
+      "negative": 598
+    },
+    {
+      "month": "2021-08",
+      "total": 2301,
+      "positive": 1689,
+      "negative": 612
+    },
+    {
+      "month": "2021-09",
+      "total": 2194,
+      "positive": 1701,
+      "negative": 493
+    },
+    {
+      "month": "2021-10",
+      "total": 1513,
+      "positive": 1180,
+      "negative": 333
+    },
+    {
+      "month": "2021-11",
+      "total": 8573,
+      "positive": 7464,
+      "negative": 1109
+    },
+    {
+      "month": "2021-12",
+      "total": 4208,
+      "positive": 3469,
+      "negative": 739
+    },
+    {
+      "month": "2022-01",
+      "total": 3135,
+      "positive": 2500,
+      "negative": 635
+    },
+    {
+      "month": "2022-02",
+      "total": 4117,
+      "positive": 3393,
+      "negative": 724
+    },
+    {
+      "month": "2022-03",
+      "total": 2271,
+      "positive": 2027,
+      "negative": 244
+    },
+    {
+      "month": "2022-04",
+      "total": 1983,
+      "positive": 1710,
+      "negative": 273
+    },
+    {
+      "month": "2022-05",
+      "total": 1859,
+      "positive": 1654,
+      "negative": 205
+    },
+    {
+      "month": "2022-06",
+      "total": 1631,
+      "positive": 1407,
+      "negative": 224
+    },
+    {
+      "month": "2022-07",
+      "total": 1983,
+      "positive": 1698,
+      "negative": 285
+    },
+    {
+      "month": "2022-08",
+      "total": 1815,
+      "positive": 1572,
+      "negative": 243
+    },
+    {
+      "month": "2022-09",
+      "total": 7529,
+      "positive": 6824,
+      "negative": 705
+    },
+    {
+      "month": "2022-10",
+      "total": 7458,
+      "positive": 6858,
+      "negative": 600
+    },
+    {
+      "month": "2022-11",
+      "total": 7127,
+      "positive": 6710,
+      "negative": 417
+    },
+    {
+      "month": "2022-12",
+      "total": 4712,
+      "positive": 4275,
+      "negative": 437
+    },
+    {
+      "month": "2023-01",
+      "total": 4989,
+      "positive": 4396,
+      "negative": 593
+    },
+    {
+      "month": "2023-02",
+      "total": 2415,
+      "positive": 2133,
+      "negative": 282
+    },
+    {
+      "month": "2023-03",
+      "total": 2209,
+      "positive": 1957,
+      "negative": 252
+    },
+    {
+      "month": "2023-04",
+      "total": 3011,
+      "positive": 2562,
+      "negative": 449
+    },
+    {
+      "month": "2023-05",
+      "total": 1864,
+      "positive": 1663,
+      "negative": 201
+    },
+    {
+      "month": "2023-06",
+      "total": 2734,
+      "positive": 2408,
+      "negative": 326
+    },
+    {
+      "month": "2023-07",
+      "total": 3295,
+      "positive": 2955,
+      "negative": 340
+    },
+    {
+      "month": "2023-08",
+      "total": 2792,
+      "positive": 2535,
+      "negative": 257
+    },
+    {
+      "month": "2023-09",
+      "total": 8283,
+      "positive": 7411,
+      "negative": 872
+    },
+    {
+      "month": "2023-10",
+      "total": 10952,
+      "positive": 10179,
+      "negative": 773
+    },
+    {
+      "month": "2023-11",
+      "total": 5089,
+      "positive": 4733,
+      "negative": 356
+    },
+    {
+      "month": "2023-12",
+      "total": 3096,
+      "positive": 2837,
+      "negative": 259
+    }
+  ]
+}
