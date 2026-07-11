@@ -2,6 +2,8 @@
 
 An NLP and Machine Learning pipeline that analyzes 287,937 Steam reviews to generate a data-driven, developer-ready feature priority roadmap.
 
+![Dashboard Preview](dashboard/Dashboard.png)
+
 ## Overview
 - **Analyzes** massive amounts of raw Steam review data.
 - **Categorizes** feedback into 10 distinct game feature areas using a regex keyword taxonomy.
