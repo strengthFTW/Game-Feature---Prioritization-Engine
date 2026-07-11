@@ -24,7 +24,7 @@ An NLP and Machine Learning pipeline that analyzes 287,937 Steam reviews to gene
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/game-feature-prioritization-engine.git
+   git clone https://github.com/strengthFTW/Game-Feature---Prioritization-Engine.git
    ```
 2. Open `index.html` in your web browser to view the portfolio.
 3. Open `dashboard/index.html` in your web browser to view the interactive data dashboard.
